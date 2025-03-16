@@ -39,6 +39,8 @@ from rag.utils.storage_factory import STORAGE_IMPL
 # @validate_request("parent_id")
 def upload():
     pf_id = request.form.get("parent_id")
+    # 获取文件类型参数
+    file_type = request.form.get("file_type", "10k")  # 默认为10k
 
     if not pf_id:
         root_folder = FileService.get_root_folder(current_user.id)
@@ -111,6 +113,7 @@ def upload():
                 "name": filename,
                 "location": location,
                 "size": len(blob),
+                "file_type": file_type,  # 保存文件类型参数
             }
             file = FileService.insert(file)
             STORAGE_IMPL.put(last_folder.id, location, blob)

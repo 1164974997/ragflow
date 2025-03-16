@@ -212,6 +212,7 @@ export const useUploadFile = () => {
     mutationFn: async (params: {
       fileList: UploadFile[];
       parentId: string;
+      fileType?: string;
     }) => {
       const fileList = params.fileList;
       const pathList = params.fileList.map(
@@ -219,6 +220,9 @@ export const useUploadFile = () => {
       );
       const formData = new FormData();
       formData.append('parent_id', params.parentId);
+      if (params.fileType) {
+        formData.append('file_type', params.fileType);
+      }
       fileList.forEach((file: any, index: number) => {
         formData.append('file', file);
         formData.append('path', pathList[index]);

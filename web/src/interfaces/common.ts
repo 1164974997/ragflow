@@ -15,5 +15,5 @@ export interface IModalProps<T> {
   switchVisible?(visible: boolean): void;
   visible?: boolean;
   loading?: boolean;
-  onOk?(payload?: T): Promise<any> | void;
+  onOk?(payload?: T, type?: string): Promise<any> | void;
 }

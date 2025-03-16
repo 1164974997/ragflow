@@ -815,6 +815,12 @@ class File(DataBaseModel):
         null=False,
         default="",
         help_text="where dose this document come from", index=True)
+    file_type = CharField(
+        max_length=32, 
+        null=True, 
+        default="10k",
+        help_text="file type (10k or 10q)",
+        index=True)
 
     class Meta:
         db_table = "file"
@@ -1112,6 +1118,15 @@ def migrate_db():
             migrate(
                 migrator.add_column("document", "meta_fields",
                                     JSONField(null=True, default={}))
+            )
+        except Exception:
+            pass
+        try:
+            migrate(
+                migrator.add_column("file", "file_type", 
+                                    CharField(max_length=32, null=True, default="10k",
+                                             help_text="file type (10k or 10q)",
+                                             index=True))
             )
         except Exception:
             pass

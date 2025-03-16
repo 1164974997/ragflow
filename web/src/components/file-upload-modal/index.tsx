@@ -5,8 +5,10 @@ import {
   Flex,
   Modal,
   Segmented,
+  Select,
   Tabs,
   TabsProps,
+  Typography,
   Upload,
   UploadFile,
   UploadProps,
@@ -16,6 +18,7 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import styles from './index.less';
 
 const { Dragger } = Upload;
+const { Text } = Typography;
 
 const FileUpload = ({
   directory,
@@ -68,6 +71,7 @@ const FileUploadModal = ({
   const [value, setValue] = useState<string | number>('local');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [directoryFileList, setDirectoryFileList] = useState<UploadFile[]>([]);
+  const [fileType, setFileType] = useState<string>('10k'); // 默认选择10k类型
 
   const clearFileList = () => {
     setFileList([]);
@@ -75,12 +79,17 @@ const FileUploadModal = ({
   };
 
   const onOk = async () => {
-    const ret = await onFileUploadOk?.([...fileList, ...directoryFileList]);
+    // 将fileType和文件一起提交给上传接口
+    const ret = await onFileUploadOk?.(
+      [...fileList, ...directoryFileList],
+      fileType,
+    );
     return ret;
   };
 
   const afterClose = () => {
     clearFileList();
+    setFileType('10k'); // 重置为默认类型
   };
 
   const items: TabsProps['items'] = [
@@ -129,7 +138,23 @@ const FileUploadModal = ({
             onChange={setValue}
           />
           {value === 'local' ? (
-            <Tabs defaultActiveKey="1" items={items} />
+            <>
+              <Flex gap="middle" align="center">
+                <Text>
+                  {t('fileType', { keyPrefix: 'common' }) || '文件类型'}:
+                </Text>
+                <Select
+                  style={{ width: 120 }}
+                  value={fileType}
+                  onChange={setFileType}
+                  options={[
+                    { value: '10k', label: '10K' },
+                    { value: '10q', label: '10Q' },
+                  ]}
+                />
+              </Flex>
+              <Tabs defaultActiveKey="1" items={items} />
+            </>
           ) : (
             t('comingSoon', { keyPrefix: 'common' })
           )}
