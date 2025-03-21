@@ -915,6 +915,22 @@ class Dialog(DataBaseModel):
         help_text="default rerank model ID")
 
     kb_ids = JSONField(null=False, default=[])
+    
+    # 新增字段
+    document_type = CharField(
+        max_length=32,
+        null=True,
+        default="10k", 
+        help_text="document type (10k or 10q)",
+        index=True)
+    company_name = CharField(
+        max_length=255,
+        null=True,
+        help_text="company name",
+        index=True)
+    from_year = IntegerField(null=True, help_text="start year for documents")
+    to_year = IntegerField(null=True, help_text="end year for documents")
+    
     status = CharField(
         max_length=1,
         null=True,
@@ -1127,6 +1143,39 @@ def migrate_db():
                                     CharField(max_length=32, null=True, default="10k",
                                              help_text="file type (10k or 10q)",
                                              index=True))
+            )
+        except Exception:
+            pass
+        
+        # 添加Dialog新字段的迁移代码
+        try:
+            migrate(
+                migrator.add_column("dialog", "document_type", 
+                                    CharField(max_length=32, null=True, default="10k",
+                                             help_text="document type (10k or 10q)",
+                                             index=True))
+            )
+        except Exception:
+            pass
+            
+        try:
+            migrate(
+                migrator.add_column("dialog", "company_name",
+                                    CharField(max_length=255, null=True, help_text="company name", index=True))
+            )
+        except Exception:
+            pass
+            
+        try:
+            migrate(
+                migrator.add_column("dialog", "from_year", IntegerField(null=True, help_text="start year for documents"))
+            )
+        except Exception:
+            pass
+            
+        try:
+            migrate(
+                migrator.add_column("dialog", "to_year", IntegerField(null=True, help_text="end year for documents"))
             )
         except Exception:
             pass

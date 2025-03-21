@@ -2,7 +2,7 @@ import KnowledgeBaseItem from '@/components/knowledge-base-item';
 import { useTranslate } from '@/hooks/common-hooks';
 import { useFetchTenantInfo } from '@/hooks/user-setting-hooks';
 import { PlusOutlined } from '@ant-design/icons';
-import { Form, Input, message, Select, Switch, Upload } from 'antd';
+import { Form, Input, Select, Space, Switch, Upload, message } from 'antd';
 import classNames from 'classnames';
 import { useCallback } from 'react';
 import { ISegmentedContentProps } from '../interface';
@@ -104,6 +104,30 @@ const AssistantSetting = ({
             { value: 'English', label: t('english', { keyPrefix: 'common' }) },
           ]}
         />
+      </Form.Item>
+      <Form.Item name={'document_type'} label={t('documentType')}>
+        <Select
+          placeholder={t('selectDocumentType')}
+          allowClear
+          options={[
+            { value: '10k', label: '10K' },
+            { value: '10q', label: '10Q' },
+          ]}
+        />
+      </Form.Item>
+      <Form.Item name={'company_name'} label={t('companyName')}>
+        <Input placeholder={t('enterCompanyName')} />
+      </Form.Item>
+      <Form.Item label={t('yearRange')}>
+        <Space>
+          <Form.Item name={'from_year'} noStyle>
+            <Input placeholder={t('fromYear')} style={{ width: 120 }} />
+          </Form.Item>
+          <span>to</span>
+          <Form.Item name={'to_year'} noStyle>
+            <Input placeholder={t('toYear')} style={{ width: 120 }} />
+          </Form.Item>
+        </Space>
       </Form.Item>
       <Form.Item
         name={emptyResponseField}

@@ -25,12 +25,23 @@ from api import settings
 from api.utils.api_utils import server_error_response, get_data_error_result, validate_request
 from api.utils import get_uuid
 from api.utils.api_utils import get_json_result
+import logging  # 添加logging模块导入
 
 
 @manager.route('/set', methods=['POST'])  # noqa: F821
 @login_required
 def set_dialog():
     req = request.json
+    
+    # 添加日志打印请求参数
+    logging.info("=== Dialog/set创建请求参数 ===")
+    logging.info(f"完整请求: {req}")
+    logging.info(f"新增字段 - document_type: {req.get('document_type')}")
+    logging.info(f"新增字段 - company_name: {req.get('company_name')}")
+    logging.info(f"新增字段 - from_year: {req.get('from_year')}")
+    logging.info(f"新增字段 - to_year: {req.get('to_year')}")
+    logging.info("=========================")
+    
     dialog_id = req.get("dialog_id")
     name = req.get("name", "New Dialog")
     description = req.get("description", "A helpful dialog")
@@ -44,7 +55,7 @@ def set_dialog():
     vector_similarity_weight = req.get("vector_similarity_weight", 0.3)
     llm_setting = req.get("llm_setting", {})
     default_prompt = {
-        "system": """你是一个智能助手，请总结知识库的内容来回答问题，请列举知识库中的数据详细回答。当所有知识库内容都与问题无关时，你的回答必须包括“知识库中未找到您要的答案！”这句话。回答需要考虑聊天历史。
+        "system": """你是一个智能助手，请总结知识库的内容来回答问题，请列举知识库中的数据详细回答。当所有知识库内容都与问题无关时，你的回答必须包括"知识库中未找到您要的答案！"这句话。回答需要考虑聊天历史。
 以下是知识库：
 {knowledge}
 以上是知识库。""",

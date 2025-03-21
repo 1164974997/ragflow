@@ -132,25 +132,25 @@ services:
       - ragflow
     restart: on-failure
 
-  kibana:
-    container_name: ragflow-kibana
-    image: kibana:${STACK_VERSION}
-    profiles:
-      - elasticsearch
-    volumes:
-      - kibana-data:/usr/share/kibana/data
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_HOSTS=http://es01:1200
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
-      - TZ=${TIMEZONE}
-    depends_on:
-      - es01
-    networks:
-      - ragflow
-    restart: on-failure
+  # kibana:
+  #   container_name: ragflow-kibana
+  #   image: kibana:${STACK_VERSION}
+  #   profiles:
+  #     - elasticsearch
+  #   volumes:
+  #     - kibana-data:/usr/share/kibana/data
+  #   ports:
+  #     - "5601:5601"
+  #   environment:
+  #     - ELASTICSEARCH_HOSTS=http://es01:1200
+  #     - ELASTICSEARCH_USERNAME=elastic
+  #     - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+  #     - TZ=${TIMEZONE}
+  #   depends_on:
+  #     - es01
+  #   networks:
+  #     - ragflow
+  #   restart: on-failure
 
 volumes:
   esdata01:

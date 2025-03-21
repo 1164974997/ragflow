@@ -86,6 +86,11 @@ const ChatConfigurationModal = ({
 
     const icon = await getBase64FromUploadFileList(values.icon);
 
+    const documentType = nextValues.document_type;
+    const companyName = nextValues.company_name;
+    const fromYear = nextValues.from_year;
+    const toYear = nextValues.to_year;
+
     const finalValues = {
       dialog_id: initialDialog.id,
       ...nextValues,
@@ -96,6 +101,10 @@ const ChatConfigurationModal = ({
         empty_response: emptyResponse,
       },
       icon,
+      document_type: documentType,
+      company_name: companyName,
+      from_year: fromYear,
+      to_year: toYear,
     };
     onOk(finalValues);
   };

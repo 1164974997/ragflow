@@ -141,7 +141,7 @@ export default {
         '使用视觉模型进行布局分析，以更好地识别文档结构，找到标题、文本块、图像和表格的位置。 如果没有此功能，则只能获取 PDF 的纯文本。',
       taskPageSize: '任务页面大小',
       taskPageSizeMessage: '请输入您的任务页面大小！',
-      taskPageSizeTip: `如果使用布局识别，PDF 文件将被分成连续的组。 布局分析将在组之间并行执行，以提高处理速度。 “任务页面大小”决定组的大小。 页面大小越大，将页面之间的连续文本分割成不同块的机会就越低。`,
+      taskPageSizeTip: `如果使用布局识别，PDF 文件将被分成连续的组。 布局分析将在组之间并行执行，以提高处理速度。 "任务页面大小"决定组的大小。 页面大小越大，将页面之间的连续文本分割成不同块的机会就越低。`,
       addPage: '新增页面',
       greaterThan: '当前值必须大于起始值！',
       greaterThanPrevious: '当前值必须大于之前的值！',
@@ -160,13 +160,13 @@ export default {
       topKTip: `K块将被送入Rerank型号。`,
       delimiter: `分段标识符`,
       delimiterTip:
-        '支持多字符作为分隔符，多字符分隔符用`包裹。如配置成这样：\n`##`;那么就会用换行，两个#以及分号先对文本进行分割，然后按照“ token number”大小进行拼装。',
+        '支持多字符作为分隔符，多字符分隔符用`包裹。如配置成这样：\n`##`;那么就会用换行，两个#以及分号先对文本进行分割，然后按照" token number"大小进行拼装。',
       html4excel: '表格转HTML',
       html4excelTip: `开启后电子表格会被解析为 HTML 表格，每张表格最多 256 行，否则会按行解析为键值对。`,
       autoKeywords: '自动关键词',
-      autoKeywordsTip: `在查询此类关键词时，为每个块提取 N 个关键词以提高其排名得分。在“系统模型设置”中设置的 LLM 将消耗额外的 token。您可以在块列表中查看结果。`,
+      autoKeywordsTip: `在查询此类关键词时，为每个块提取 N 个关键词以提高其排名得分。在"系统模型设置"中设置的 LLM 将消耗额外的 token。您可以在块列表中查看结果。`,
       autoQuestions: '自动问题',
-      autoQuestionsTip: `在查询此类问题时，为每个块提取 N 个问题以提高其排名得分。在“系统模型设置”中设置的 LLM 将消耗额外的 token。您可以在块列表中查看结果。如果发生错误，此功能不会破坏整个分块过程，除了将空结果添加到原始块。`,
+      autoQuestionsTip: `在查询此类问题时，为每个块提取 N 个问题以提高其排名得分。在"系统模型设置"中设置的 LLM 将消耗额外的 token。您可以在块列表中查看结果。如果发生错误，此功能不会破坏整个分块过程，除了将空结果添加到原始块。`,
       redo: '是否清空已有 {{chunkNum}}个 chunk？',
       setMetaData: '设置元数据',
       pleaseInputJson: '请输入JSON',
@@ -175,8 +175,8 @@ export default {
 <b>元数据为：</b><br>
 <code>
 {
-“作者”：“Alex Dowson”，
-“日期”：“2024-11-12”
+"作者"："Alex Dowson"，
+"日期"："2024-11-12"
 }
 </code><br>
 <b>提示将为：</b><br>
@@ -207,7 +207,7 @@ export default {
       chunkTokenNumberMessage: '块Token数是必填项',
       embeddingModelTip:
         '用于嵌入块的嵌入模型。 一旦知识库有了块，它就无法更改。 如果你想改变它，你需要删除所有的块。',
-      permissionsTip: '如果权限是“团队”，则所有团队成员都可以操作知识库。',
+      permissionsTip: '如果权限是"团队"，则所有团队成员都可以操作知识库。',
       chunkTokenNumberTip: '它大致确定了一个块的Token数量。',
       chunkMethod: '解析方法',
       chunkMethodTip: '说明位于右侧。',
@@ -241,13 +241,13 @@ export default {
       <p>此方法将简单的方法应用于块文件：</p>
       <p>
       <li>系统将使用视觉检测模型将连续文本分割成多个片段。</li>
-      <li>接下来，这些连续的片段被合并成Token数不超过“Token数”的块。</li></p>`,
+      <li>接下来，这些连续的片段被合并成Token数不超过"Token数"的块。</li></p>`,
       paper: `<p>仅支持<b>PDF</b>文件。</p><p>
       如果我们的模型运行良好，论文将按其部分进行切片，例如<i>摘要、1.1、1.2</i>等。</p><p>
       这样做的好处是LLM可以更好的概括论文中相关章节的内容，
       产生更全面的答案，帮助读者更好地理解论文。
       缺点是它增加了 LLM 对话的背景并增加了计算成本，
-      所以在对话过程中，你可以考虑减少‘<b>topN</b>’的设置。</p>`,
+      所以在对话过程中，你可以考虑减少'<b>topN</b>'的设置。</p>`,
       presentation: `<p>支持的文件格式为<b>PDF</b>、<b>PPTX</b>。</p><p>
       每个页面都将被视为一个块。 并且每个页面的缩略图都会被存储。</p><p>
       <i>您上传的所有PPT文件都会使用此方法自动分块，无需为每个PPT文件进行设置。</i></p>`,
@@ -314,8 +314,8 @@ export default {
 <p>接下来，将分块传输到 LLM 以提取知识图谱和思维导图的节点和关系。</p>
 
 注意您需要指定的条目类型。</p>`,
-      tag: `<p>使用“标签”作为分块方法的知识库应该被其他知识库使用，以将标签添加到其块中，对这些块的查询也将带有标签。</p>
-<p>使用“标签”作为分块方法的知识库<b>不</b>应该参与 RAG 过程。</p>
+      tag: `<p>使用"标签"作为分块方法的知识库应该被其他知识库使用，以将标签添加到其块中，对这些块的查询也将带有标签。</p>
+<p>使用"标签"作为分块方法的知识库<b>不</b>应该参与 RAG 过程。</p>
 <p>此知识库中的块是标签的示例，它们演示了整个标签集以及块和标签之间的相关性。</p>
 
 <p>此块方法支持<b>EXCEL</b>和<b>CSV/TXT</b>文件格式。</p>
@@ -355,7 +355,7 @@ export default {
       tagSet: '标签库',
       topnTags: 'Top-N 标签',
       tagSetTip: `
-      <p> 选择“标签”知识库有助于标记每个块。 </p>
+      <p> 选择"标签"知识库有助于标记每个块。 </p>
       <p>对这些块的查询也将带有标签。 </p>
       此过程将通过向数据集添加更多信息来提高检索的准确性，尤其是在存在大量块的情况下。
       <p>标签和关键字之间的区别：</p>
@@ -371,7 +371,7 @@ export default {
       useGraphRagTip:
         '文件分块后，所有块将用于知识图谱生成，这对多跳和复杂问题的推理大有帮助。',
       graphRagMethod: '方法',
-      graphRagMethodTip: `Light：实体和关系提取提示来自 GitHub - HKUDS/LightRAG：“LightRAG：简单快速的检索增强生成”<br>
+      graphRagMethodTip: `Light：实体和关系提取提示来自 GitHub - HKUDS/LightRAG："LightRAG：简单快速的检索增强生成"<br>
 General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于图形的模块化检索增强生成 (RAG) 系统`,
       resolution: '实体归一化',
       resolutionTip: `解析过程会将具有相同含义的实体合并在一起，从而使知识图谱更简洁、更准确。应合并以下实体：特朗普总统、唐纳德·特朗普、唐纳德·J·特朗普、唐纳德·约翰·特朗普`,
@@ -417,9 +417,16 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
       namePlaceholder: '例如 贾维斯简历',
       assistantAvatar: '助理头像',
       language: '语言',
+      documentType: '文档类型',
+      selectDocumentType: '请选择文档类型',
+      companyName: '公司名称',
+      enterCompanyName: '请输入公司名称',
+      yearRange: '年份范围',
+      fromYear: '起始年份',
+      toYear: '结束年份',
       emptyResponse: '空回复',
       emptyResponseTip: `如果在知识库中没有检索到用户的问题，它将使用它作为答案。 如果您希望 LLM 在未检索到任何内容时提出自己的意见，请将此留空。`,
-      emptyResponseMessage: `当知识库中未检索到任何相关信息时，将触发空响应。由于未选择任何知识库，因此请清除“空响应”。`,
+      emptyResponseMessage: `当知识库中未检索到任何相关信息时，将触发空响应。由于未选择任何知识库，因此请清除"空响应"。`,
       setAnOpener: '设置开场白',
       setAnOpenerInitial: `你好！ 我是你的助理，有什么可以帮到你的吗？`,
       setAnOpenerTip: '您想如何欢迎您的客户？',
@@ -427,7 +434,7 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
       knowledgeBasesMessage: '请选择',
       knowledgeBasesTip: '选择关联的知识库。',
       system: '系统',
-      systemInitialValue: `你是一个智能助手，请总结知识库的内容来回答问题，请列举知识库中的数据详细回答。当所有知识库内容都与问题无关时，你的回答必须包括“知识库中未找到您要的答案！”这句话。回答需要考虑聊天历史。
+      systemInitialValue: `你是一个智能助手，请总结知识库的内容来回答问题，请列举知识库中的数据详细回答。当所有知识库内容都与问题无关时，你的回答必须包括"知识库中未找到您要的答案！"这句话。回答需要考虑聊天历史。
         以下是知识库：
         {knowledge}
         以上是知识库。`,
@@ -435,12 +442,12 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
       systemTip:
         '当LLM回答问题时，你需要LLM遵循的说明，比如角色设计、答案长度和答案语言等。',
       topN: 'Top N',
-      topNTip: `并非所有相似度得分高于“相似度阈值”的块都会被提供给大语言模型。 LLM 只能看到这些“Top N”块。`,
+      topNTip: `并非所有相似度得分高于"相似度阈值"的块都会被提供给大语言模型。 LLM 只能看到这些"Top N"块。`,
       variable: '变量',
       variableTip: `如果您使用对话 API，变量可能会帮助您使用不同的策略与客户聊天。
-      这些变量用于填写提示中的“系统”部分，以便给LLM一个提示。
-      “知识”是一个非常特殊的变量，它将用检索到的块填充。
-      “System”中的所有变量都应该用大括号括起来。`,
+      这些变量用于填写提示中的"系统"部分，以便给LLM一个提示。
+      "知识"是一个非常特殊的变量，它将用检索到的块填充。
+      "System"中的所有变量都应该用大括号括起来。`,
       add: '新增',
       key: '关键字',
       optional: '可选的',
@@ -452,7 +459,7 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
       improvise: '即兴创作',
       precise: '精确',
       balance: '平衡',
-      freedomTip: `“精确”意味着大语言模型会保守并谨慎地回答你的问题。 “即兴发挥”意味着你希望大语言模型能够自由地畅所欲言。 “平衡”是谨慎与自由之间的平衡。`,
+      freedomTip: `"精确"意味着大语言模型会保守并谨慎地回答你的问题。 "即兴发挥"意味着你希望大语言模型能够自由地畅所欲言。 "平衡"是谨慎与自由之间的平衡。`,
       temperature: '温度',
       temperatureMessage: '温度是必填项',
       temperatureTip:
@@ -460,7 +467,7 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
       topP: 'Top P',
       topPMessage: 'Top P 是必填项',
       topPTip:
-        '该参数也称为“核心采样”，它设置一个阈值来选择较小的单词集进行采样。 它专注于最可能的单词，剔除不太可能的单词。',
+        '该参数也称为"核心采样"，它设置一个阈值来选择较小的单词集进行采样。 它专注于最可能的单词，剔除不太可能的单词。',
       presencePenalty: '存在处罚',
       presencePenaltyMessage: '存在处罚是必填项',
       presencePenaltyTip:
@@ -663,7 +670,7 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
         '请输入 Google Cloud Service Account Key in base64 format',
       addGoogleRegion: 'Google Cloud 区域',
       GoogleRegionMessage: '请输入 Google Cloud 区域',
-      modelProvidersWarn: `请先在<b>模型提供商</b>中添加嵌入模型和LLM，然后在“系统模型设置”中设置它们。`,
+      modelProvidersWarn: `请先在<b>模型提供商</b>中添加嵌入模型和LLM，然后在"系统模型设置"中设置它们。`,
       apiVersion: 'API版本',
       apiVersionMessage: '请输入API版本!',
       add: '添加',
@@ -761,10 +768,10 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
       title: 'ID：',
       beginDescription: '这是流程开始的地方',
       answerDescription: `该组件用作机器人与人类之间的接口。它接收用户的输入并显示机器人的计算结果。`,
-      retrievalDescription: `此组件用于从知识库中检索相关信息。选择知识库。如果没有检索到任何内容，将返回“空响应”。`,
+      retrievalDescription: `此组件用于从知识库中检索相关信息。选择知识库。如果没有检索到任何内容，将返回"空响应"。`,
       generateDescription: `此组件用于调用LLM生成文本，请注意提示的设置。`,
       categorizeDescription: `此组件用于对文本进行分类。请指定类别的名称、描述和示例。每个类别都指向不同的下游组件。`,
-      relevantDescription: `该组件用来判断upstream的输出是否与用户最新的问题相关，‘是’代表相关，‘否’代表不相关。`,
+      relevantDescription: `该组件用来判断upstream的输出是否与用户最新的问题相关，'是'代表相关，'否'代表不相关。`,
       rewriteQuestionDescription: `此组件用于细化用户的提问。通常，当用户的原始提问无法从知识库中检索到相关信息时，此组件可帮助您将问题更改为更符合知识库表达方式的适当问题。`,
       messageDescription:
         '此组件用于向用户发送静态信息。您可以准备几条消息，这些消息将被随机选择。',
@@ -1140,7 +1147,7 @@ General：实体和关系提取提示来自 GitHub - microsoft/graphrag：基于
       jsonUploadTypeErrorMessage: '请上传json文件',
       jsonUploadContentErrorMessage: 'json 文件错误',
       iteration: '循环',
-      iterationDescription: `该组件首先将输入以“分隔符”分割成数组，然后依次对数组中的元素执行相同的操作步骤，直到输出所有结果，可以理解为一个任务批处理器。
+      iterationDescription: `该组件首先将输入以"分隔符"分割成数组，然后依次对数组中的元素执行相同的操作步骤，直到输出所有结果，可以理解为一个任务批处理器。
 
 例如在长文本翻译迭代节点中，如果所有内容都输入到LLM节点，可能会达到单次对话的限制，上游节点可以先将长文本分割成多个片段，配合迭代节点对每个片段进行批量翻译，避免达到单次对话的LLM消息限制。`,
       delimiterTip: `该分隔符用于将输入文本分割成几个文本片段，每个文本片段的回显将作为每次迭代的输入项。`,
