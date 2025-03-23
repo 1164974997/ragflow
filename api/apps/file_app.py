@@ -32,7 +32,7 @@ from api import settings
 from api.utils.api_utils import get_json_result
 from api.utils.file_utils import filename_type
 from rag.utils.storage_factory import STORAGE_IMPL
-
+import logging
 
 @manager.route('/upload', methods=['POST'])  # noqa: F821
 @login_required
@@ -40,8 +40,8 @@ from rag.utils.storage_factory import STORAGE_IMPL
 def upload():
     pf_id = request.form.get("parent_id")
     # 获取文件类型参数
-    file_type = request.form.get("file_type", "10k")  # 默认为10k
-
+    document_type = request.form.get("document_type", "")  # 默认为空字符串
+    logging.info(f"document_type: {document_type}")
     if not pf_id:
         root_folder = FileService.get_root_folder(current_user.id)
         pf_id = root_folder["id"]
@@ -113,7 +113,7 @@ def upload():
                 "name": filename,
                 "location": location,
                 "size": len(blob),
-                "file_type": file_type,  # 保存文件类型参数
+                "document_type": document_type,  # 保存文件类型参数
             }
             file = FileService.insert(file)
             STORAGE_IMPL.put(last_folder.id, location, blob)

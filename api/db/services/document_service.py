@@ -454,6 +454,25 @@ class DocumentService(CommonService):
 
     @classmethod
     @DB.connection_context()
+    def get_docs_by_filters(cls, kb_ids, document_type=None, from_year=None, to_year=None, company_name=None):
+        docs = cls.model.select(cls.model.id).where(cls.model.kb_id in kb_ids)
+        
+        if document_type:
+            docs = docs.where(cls.model.document_type == document_type)
+            
+        if company_name:
+            docs = docs.where(cls.model.company_name == company_name)
+            
+        if from_year is not None:
+            docs = docs.where(cls.model.year >= from_year)
+            
+        if to_year is not None:
+            docs = docs.where(cls.model.year <= to_year)
+            
+        return [doc['id'] for doc in docs.dicts()]
+
+    @classmethod
+    @DB.connection_context()
     def do_cancel(cls, doc_id):
         try:
             _, doc = DocumentService.get_by_id(doc_id)
@@ -511,6 +530,7 @@ def doc_upload_and_parse(conversation_id, file_objs, user_id):
 
     embd_mdl = LLMBundle(kb.tenant_id, LLMType.EMBEDDING, llm_name=kb.embd_id, lang=kb.language)
 
+    # FileService.upload_document 已经处理了company_name和year的提取和存储
     err, files = FileService.upload_document(kb, file_objs, user_id)
     assert not err, "\n".join(err)
 

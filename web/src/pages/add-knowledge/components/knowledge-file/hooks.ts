@@ -146,9 +146,15 @@ export const useHandleUploadDocument = () => {
   const { uploadDocument, loading } = useUploadNextDocument();
 
   const onDocumentUploadOk = useCallback(
-    async (fileList: UploadFile[]): Promise<number | undefined> => {
+    async (
+      fileList: UploadFile[],
+      document_type?: string,
+    ): Promise<number | undefined> => {
       if (fileList.length > 0) {
-        const ret: any = await uploadDocument(fileList);
+        const ret: any = await uploadDocument({
+          fileList,
+          document_type,
+        });
         if (typeof ret?.message !== 'string') {
           return;
         }

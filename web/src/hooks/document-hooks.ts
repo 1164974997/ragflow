@@ -247,9 +247,14 @@ export const useUploadNextDocument = () => {
     mutateAsync,
   } = useMutation({
     mutationKey: ['uploadDocument'],
-    mutationFn: async (fileList: UploadFile[]) => {
+    mutationFn: async (params: {
+      fileList: UploadFile[];
+      document_type?: string;
+    }) => {
+      const { fileList, document_type = '' } = params;
       const formData = new FormData();
       formData.append('kb_id', knowledgeId);
+      formData.append('document_type', document_type);
       fileList.forEach((file: any) => {
         formData.append('file', file);
       });

@@ -220,9 +220,7 @@ export const useUploadFile = () => {
       );
       const formData = new FormData();
       formData.append('parent_id', params.parentId);
-      if (params.fileType) {
-        formData.append('file_type', params.fileType);
-      }
+      formData.append('document_type', params.fileType || '');
       fileList.forEach((file: any, index: number) => {
         formData.append('file', file);
         formData.append('path', pathList[index]);

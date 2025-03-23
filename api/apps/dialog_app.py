@@ -103,7 +103,11 @@ def set_dialog():
                 "rerank_id": rerank_id,
                 "similarity_threshold": similarity_threshold,
                 "vector_similarity_weight": vector_similarity_weight,
-                "icon": icon
+                "icon": icon,
+                "document_type": req.get("document_type", ""),
+                "company_name": req.get("company_name", ""),
+                "from_year": req.get("from_year"),
+                "to_year": req.get("to_year")
             }
             if not DialogService.save(**dia):
                 return get_data_error_result(message="Fail to new a dialog!")

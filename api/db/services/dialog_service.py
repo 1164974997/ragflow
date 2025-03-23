@@ -295,7 +295,7 @@ def chat(dialog, messages, stream=True, **kwargs):
 
         knowledges = []
         if prompt_config.get("reasoning", False):
-            for think in reasoning(kbinfos, " ".join(questions), chat_mdl, embd_mdl, tenant_ids, dialog.kb_ids, MAX_SEARCH_LIMIT=3):
+            for think in reasoning(kbinfos, " ".join(questions), chat_mdl, embd_mdl, tenant_ids, dialog.kb_ids, MAX_SEARCH_LIMIT=3, dialog=dialog):
                 if isinstance(think, str):
                     thought = think
                     knowledges = [t for t in think.split("\n") if t]
@@ -307,7 +307,8 @@ def chat(dialog, messages, stream=True, **kwargs):
                                           dialog.vector_similarity_weight,
                                           doc_ids=attachments,
                                           top=dialog.top_k, aggs=False, rerank_mdl=rerank_mdl,
-                                          rank_feature=label_question(" ".join(questions), kbs)
+                                          rank_feature=label_question(" ".join(questions), kbs),
+                                          dialog=dialog
                                           )
             if prompt_config.get("use_kg"):
                 ck = settings.kg_retrievaler.retrieval(" ".join(questions),
@@ -853,7 +854,7 @@ Output:
 
 def reasoning(chunk_info: dict, question: str, chat_mdl: LLMBundle, embd_mdl: LLMBundle,
               tenant_ids: list[str], kb_ids: list[str], MAX_SEARCH_LIMIT: int = 3,
-              top_n: int = 5, similarity_threshold: float = 0.4, vector_similarity_weight: float = 0.3):
+              top_n: int = 5, similarity_threshold: float = 0.4, vector_similarity_weight: float = 0.3, dialog=None):
     BEGIN_SEARCH_QUERY = "<|begin_search_query|>"
     END_SEARCH_QUERY = "<|end_search_query|>"
     BEGIN_SEARCH_RESULT = "<|begin_search_result|>"
@@ -995,10 +996,10 @@ def reasoning(chunk_info: dict, question: str, chat_mdl: LLMBundle, embd_mdl: LL
                         if truncated_prev_reasoning[-len('\n\n...\n\n'):] != '\n\n...\n\n':
                             truncated_prev_reasoning += '...\n\n'
             truncated_prev_reasoning = truncated_prev_reasoning.strip('\n')
-
             kbinfos = settings.retrievaler.retrieval(search_query, embd_mdl, tenant_ids, kb_ids, 1, top_n,
                                                      similarity_threshold,
-                                                     vector_similarity_weight
+                                                     vector_similarity_weight,
+                                                     dialog=dialog
                                                      )
             # Merge chunk info for citations
             if not chunk_info["chunks"]:

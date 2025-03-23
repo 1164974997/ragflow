@@ -79,7 +79,8 @@ def convert():
                         "type": file.type,
                         "name": file.name,
                         "location": file.location,
-                        "size": file.size
+                        "size": file.size,
+                        "document_type": file.document_type
                     })
                     file2document = File2DocumentService.insert({
                         "id": get_uuid(),

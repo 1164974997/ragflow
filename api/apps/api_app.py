@@ -427,6 +427,19 @@ def upload():
             location += "_"
         blob = request.files['file'].read()
         STORAGE_IMPL.put(kb_id, location, blob)
+        
+        # 从文件名中提取company_name和year
+        company_name = None
+        year = None
+        # 匹配形如 company_2024.ext 或 prefix_company_2024.ext 的模式
+        match = re.search(r'(?:.*_)?([a-zA-Z]+)_(\d{4})(?:\.|_)', filename)
+        if match:
+            company_name = match.group(1)
+            try:
+                year = int(match.group(2))
+            except ValueError:
+                year = None
+        
         doc = {
             "id": get_uuid(),
             "kb_id": kb.id,
@@ -437,7 +450,10 @@ def upload():
             "name": filename,
             "location": location,
             "size": len(blob),
-            "thumbnail": thumbnail(filename, blob)
+            "thumbnail": thumbnail(filename, blob),
+            "document_type": "",
+            "company_name": company_name,
+            "year": year
         }
 
         form_data = request.form
@@ -503,6 +519,7 @@ def upload_parse():
             return get_json_result(
                 data=False, message='No file selected!', code=settings.RetCode.ARGUMENT_ERROR)
 
+    # 修改doc_upload_and_parse函数调用，传递处理company_name和year的函数或逻辑
     doc_ids = doc_upload_and_parse(request.form.get("conversation_id"), file_objs, objs[0].tenant_id)
     return get_json_result(data=doc_ids)
 

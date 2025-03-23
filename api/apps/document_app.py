@@ -47,12 +47,14 @@ from rag.utils.storage_factory import STORAGE_IMPL
 from api.utils.file_utils import filename_type, thumbnail, get_project_base_directory
 from api.utils.web_utils import html2pdf, is_valid_url
 from api.constants import IMG_BASE64_PREFIX
-
+import logging
 
 @manager.route('/upload', methods=['POST'])  # noqa: F821
 @login_required
 @validate_request("kb_id")
 def upload():
+    document_type = request.form.get('document_type', '')
+    logging.info(f"document_type: {document_type}")
     kb_id = request.form.get("kb_id")
     if not kb_id:
         return get_json_result(
@@ -71,7 +73,7 @@ def upload():
     if not e:
         raise LookupError("Can't find this knowledgebase!")
 
-    err, _ = FileService.upload_document(kb, file_objs, current_user.id)
+    err, _ = FileService.upload_document(kb, file_objs, current_user.id, document_type)
     if err:
         return get_json_result(
             data=False, message="\n".join(err), code=settings.RetCode.SERVER_ERROR)
@@ -128,7 +130,8 @@ def web_crawl():
             "name": filename,
             "location": location,
             "size": len(blob),
-            "thumbnail": thumbnail(filename, blob)
+            "thumbnail": thumbnail(filename, blob),
+            "document_type": ""
         }
         if doc["type"] == FileType.VISUAL:
             doc["parser_id"] = ParserType.PICTURE.value
@@ -174,7 +177,8 @@ def create():
             "type": FileType.VIRTUAL,
             "name": req["name"],
             "location": "",
-            "size": 0
+            "size": 0,
+            "document_type": ""
         })
         return get_json_result(data=doc.to_json())
     except Exception as e:

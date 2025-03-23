@@ -110,6 +110,7 @@ const AssistantSetting = ({
           placeholder={t('selectDocumentType')}
           allowClear
           options={[
+            { value: '', label: '' },
             { value: '10k', label: '10K' },
             { value: '10q', label: '10Q' },
           ]}

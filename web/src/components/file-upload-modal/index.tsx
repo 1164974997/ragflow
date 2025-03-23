@@ -71,7 +71,7 @@ const FileUploadModal = ({
   const [value, setValue] = useState<string | number>('local');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [directoryFileList, setDirectoryFileList] = useState<UploadFile[]>([]);
-  const [fileType, setFileType] = useState<string>('10k'); // 默认选择10k类型
+  const [fileType, setFileType] = useState<string>(''); // 默认为空字符串
 
   const clearFileList = () => {
     setFileList([]);
@@ -89,7 +89,7 @@ const FileUploadModal = ({
 
   const afterClose = () => {
     clearFileList();
-    setFileType('10k'); // 重置为默认类型
+    setFileType(''); // 重置为空字符串
   };
 
   const items: TabsProps['items'] = [
@@ -148,6 +148,7 @@ const FileUploadModal = ({
                   value={fileType}
                   onChange={setFileType}
                   options={[
+                    { value: '', label: '' },
                     { value: '10k', label: '10K' },
                     { value: '10q', label: '10Q' },
                   ]}

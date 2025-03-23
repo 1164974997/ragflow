@@ -761,6 +761,18 @@ class Document(DataBaseModel):
     process_begin_at = DateTimeField(null=True, index=True)
     process_duation = FloatField(default=0)
     meta_fields = JSONField(null=True, default={})
+    document_type = CharField(
+        max_length=32, 
+        null=True, 
+        default="",
+        help_text="document type (10k or 10q)",
+        index=True)
+    company_name = CharField(
+        max_length=255,
+        null=True,
+        help_text="company name",
+        index=True)
+    year = IntegerField(null=True, help_text="document year", index=True)
 
     run = CharField(
         max_length=1,
@@ -815,10 +827,10 @@ class File(DataBaseModel):
         null=False,
         default="",
         help_text="where dose this document come from", index=True)
-    file_type = CharField(
+    document_type = CharField(
         max_length=32, 
         null=True, 
-        default="10k",
+        default="",
         help_text="file type (10k or 10q)",
         index=True)
 
@@ -920,7 +932,7 @@ class Dialog(DataBaseModel):
     document_type = CharField(
         max_length=32,
         null=True,
-        default="10k", 
+        default="", 
         help_text="document type (10k or 10q)",
         index=True)
     company_name = CharField(
@@ -1139,9 +1151,20 @@ def migrate_db():
             pass
         try:
             migrate(
-                migrator.add_column("file", "file_type", 
-                                    CharField(max_length=32, null=True, default="10k",
+                migrator.add_column("file", "document_type", 
+                                    CharField(max_length=32, null=True, default="",
                                              help_text="file type (10k or 10q)",
+                                             index=True))
+            )
+        except Exception:
+            pass
+        
+        # 添加Document的document_type字段迁移代码
+        try:
+            migrate(
+                migrator.add_column("document", "document_type", 
+                                    CharField(max_length=32, null=True, default="",
+                                             help_text="document type (10k or 10q)",
                                              index=True))
             )
         except Exception:
@@ -1151,7 +1174,7 @@ def migrate_db():
         try:
             migrate(
                 migrator.add_column("dialog", "document_type", 
-                                    CharField(max_length=32, null=True, default="10k",
+                                    CharField(max_length=32, null=True, default="",
                                              help_text="document type (10k or 10q)",
                                              index=True))
             )
@@ -1176,6 +1199,21 @@ def migrate_db():
         try:
             migrate(
                 migrator.add_column("dialog", "to_year", IntegerField(null=True, help_text="end year for documents"))
+            )
+        except Exception:
+            pass
+
+        try:
+            migrate(
+                migrator.add_column("document", "company_name", 
+                                    CharField(max_length=255, null=True, help_text="company name", index=True))
+            )
+        except Exception:
+            pass
+            
+        try:
+            migrate(
+                migrator.add_column("document", "year", IntegerField(null=True, help_text="document year", index=True))
             )
         except Exception:
             pass

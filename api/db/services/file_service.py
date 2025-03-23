@@ -313,7 +313,8 @@ class FileService(CommonService):
             "type": doc["type"],
             "size": doc["size"],
             "location": doc["location"],
-            "source_type": FileSource.KNOWLEDGEBASE
+            "source_type": FileSource.KNOWLEDGEBASE,
+            "document_type": doc.get("document_type", "")
         }
         cls.save(**file)
         File2DocumentService.save(**{"id": get_uuid(), "file_id": file["id"], "document_id": doc["id"]})
@@ -329,7 +330,7 @@ class FileService(CommonService):
 
     @classmethod
     @DB.connection_context()
-    def upload_document(self, kb, file_objs, user_id):
+    def upload_document(self, kb, file_objs, user_id, document_type=""):
         root_folder = self.get_root_folder(user_id)
         pf_id = root_folder["id"]
         self.init_knowledgebase_docs(pf_id, user_id)
@@ -366,6 +367,18 @@ class FileService(CommonService):
                 if img is not None:
                     thumbnail_location = f'thumbnail_{doc_id}.png'
                     STORAGE_IMPL.put(kb.id, thumbnail_location, img)
+                
+                # 从文件名中提取company_name和year
+                company_name = None
+                year = None
+                # 匹配形如 company_2024.ext 或 prefix_company_2024.ext 的模式
+                match = re.search(r'(?:.*_)?([a-zA-Z]+)_(\d{4})(?:\.|_)', filename)
+                if match:
+                    company_name = match.group(1)
+                    try:
+                        year = int(match.group(2))
+                    except ValueError:
+                        year = None
 
                 doc = {
                     "id": doc_id,
@@ -377,7 +390,10 @@ class FileService(CommonService):
                     "name": filename,
                     "location": location,
                     "size": len(blob),
-                    "thumbnail": thumbnail_location
+                    "thumbnail": thumbnail_location,
+                    "document_type": document_type,
+                    "company_name": company_name,
+                    "year": year
                 }
                 DocumentService.insert(doc)
 

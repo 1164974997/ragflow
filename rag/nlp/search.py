@@ -22,7 +22,7 @@ from rag.utils import rmSpace
 from rag.nlp import rag_tokenizer, query
 import numpy as np
 from rag.utils.doc_store_conn import DocStoreConnection, MatchDenseExpr, FusionExpr, OrderByExpr
-
+import logging
 
 def index_name(uid): return f"ragflow_{uid}"
 
@@ -339,7 +339,15 @@ class Dealer:
     def retrieval(self, question, embd_mdl, tenant_ids, kb_ids, page, page_size, similarity_threshold=0.2,
                   vector_similarity_weight=0.3, top=1024, doc_ids=None, aggs=True,
                   rerank_mdl=None, highlight=False,
-                  rank_feature: dict | None = {PAGERANK_FLD: 10}):
+                  rank_feature: dict | None = {PAGERANK_FLD: 10},
+                  dialog=None):
+        # 在函数内部导入DocumentService以避免循环导入问题
+        from api.db.services.document_service import DocumentService
+        if dialog:
+            logging.info(f"before filter doc_ids: {doc_ids}")
+            doc_ids = DocumentService.get_docs_by_filters(kb_ids, document_type=dialog.document_type, from_year=dialog.from_year, to_year=dialog.to_year, company_name=dialog.company_name)
+            logging.info(f"after filter doc_ids: {doc_ids}")
+        
         ranks = {"total": 0, "chunks": [], "doc_aggs": {}}
         if not question:
             return ranks
@@ -349,6 +357,7 @@ class Dealer:
                "question": question, "vector": True, "topk": top,
                "similarity": similarity_threshold,
                "available_int": 1}
+        logging.info(f"req: {req}")
 
         if page > RERANK_PAGE_LIMIT:
             req["page"] = page

@@ -61,7 +61,7 @@ if __name__ == '__main__':
     /_/ |_|/_/  |_|\____//_/    /_/ \____/ |__/|__/                             
 
     """)
-    logging.info(f"!!!!!!!!!!!!!!!!？？？？？？!!!!!!!!!!!!!!!!!!!!")
+
     logging.info(
         f'RAGFlow version: {get_ragflow_version()}'
     )
